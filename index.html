@@ -13,19 +13,34 @@
 			min-width: 320px; /* Thêm giới hạn tối thiểu */
         }
         .search-box {
-            margin-bottom: 20px;
-			width: 100%;
-			max-width: 500px; /* Giới hạn chiều rộng tối đa */
-			margin-left: auto;
-			margin-right: auto;
+            display: flex;
+			  flex-direction: column; /* Xếp các phần tử theo chiều dọc */
+			  justify-content: center;
+			  align-items: center;
+			  gap: 8px;
+			  flex-wrap: wrap;
+			  margin-bottom: 20px;
+			  width: 100%;
+			  max-width: 500px; /* Hoặc giá trị phù hợp với layout */
+			  margin-left: auto;
+			  margin-right: auto;
         }
-        #searchInput {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
+        .search-box input[type="text"] {
+			  padding: 10px;
+			  font-size: 20px;
+			  width: auto; /* Thay đổi từ 180px sang auto */
+			  min-width: 200px; /* Giữ chiều rộng tối thiểu */
+			  max-width: 100%; /* Ngăn tràn khỏi container */
+			  flex-grow: 1; /* Cho phép mở rộng khi cần */
+			  border: 2px solid #999;
+			  border-radius: 8px;
+			  text-align: center; /* Căn giữa nội dung trong input */
+			}
+	   .search-box input::placeholder {
+			  font-size: 16px;
+			  font-style: italic;
+			  color: #888;
+			}
         .groupbox {
             border: 2px solid #a8d0ff; /* Màu xanh nhạt */
             border-radius: 10px; /* Độ bo tròn */
