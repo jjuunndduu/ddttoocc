@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chinese-Vietnamese Dictionary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .search-box {
+            margin-bottom: 20px;
+        }
+        #searchInput {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .groupbox {
+            border: 2px solid #a8d0ff; /* Màu xanh nhạt */
+            border-radius: 10px; /* Độ bo tròn */
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+        .groupbox-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .hanzi {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        .pinyin {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .vietnamese {
+            font-size: 18px;
+        }
+       .image-container {
+			position: relative;
+			width: 100%;
+			height: 300px; /* Chiều cao cố định */
+			overflow: hidden;
+			display: flex;
+			justify-content: center;
+			background: #f5f9ff; /* Màu nền phù hợp với theme */
+		}
+        .image-container img {
+			object-fit: contain; /* Đảm bảo xem được toàn bộ ảnh */
+			width: auto;
+			height: auto;
+			max-width: 100%;
+			max-height: 100%;
+			min-width: 100%; /* Ưu tiên fill chiều rộng */
+			min-height: 100%; /* Ưu tiên fill chiều cao */
+		}
+		
+		
+		/* Logic tự động điều chỉnh theo ảnh ngang/dọc */
+		.image-container.landscape img {
+			width: 100%;
+			height: auto;
+		}
+
+		.image-container.portrait img {
+			width: auto;
+			height: 100%;
+		}
+
+
+        .image-loading {
+            color: #666;
+            font-style: italic;
+        }
+        .hidden {
+            display: none;
+        }
+        .loading-data {
+            text-align: center;
+            color: #666;
+            margin: 20px 0;
+        }
+        .result-container {
+            margin-top: 20px;
+        }
+        .result-item {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        .no-results {
+            color: #666;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search..." disabled>
+        <div id="dataLoading" class="loading-data">Đang tải dữ liệu...</div>
+    </div>
+    
+    <div id="resultContainer" class="result-container"></div>
+
+    <script>
+        // DOM elements
+        const searchInput = document.getElementById('searchInput');
+        const resultContainer = document.getElementById('resultContainer');
+        const dataLoading = document.getElementById('dataLoading');
+
+        // Dictionary data
+        let dictionary = [];
+
+        // Handle image loading error
+        function handleImageError(imgElement, loadingElement) {
+            imgElement.classList.add('hidden');
+            loadingElement.classList.remove('hidden');
+        }
+
+        // Fetch JSON data
+        async function loadDictionary() {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/jjuunndduu/ddttoocc/refs/heads/main/zuzu.json');
+                if (!response.ok) throw new Error('Failed to load data');
+                
+                let data = await response.json();
+                
+                // Remove header row if it exists (where A="hanzi", B="pinyin", etc.)
+                if (data.length > 0 && data[0].A === "hanzi" && data[0].B === "pinyin") {
+                    dictionary = data.slice(1);
+                } else {
+                    dictionary = data;
+                }
+                
+                searchInput.disabled = false;
+                dataLoading.classList.add('hidden');
+                searchInput.placeholder = "Nhập chữ Hán, Pinyin hoặc nghĩa tiếng Việt...";
+            } catch (error) {
+                dataLoading.textContent = "Lỗi khi tải dữ liệu. Vui lòng thử lại sau.";
+                console.error("Error loading dictionary:", error);
+            }
+        }
+
+        // Display search results
+        function displayResults(results) {
+            resultContainer.innerHTML = '';
+            
+            if (results.length === 0) {
+                resultContainer.innerHTML = '<div class="no-results">Không tìm thấy kết quả phù hợp</div>';
+                return;
+            }
+            
+            results.forEach(entry => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                
+                // Create elements for each part of the result
+                const hanziPinyinGroup = document.createElement('div');
+                hanziPinyinGroup.className = 'groupbox';
+                hanziPinyinGroup.innerHTML = `
+                    <div class="groupbox-title">Chữ Hán</div>
+                    <div class="hanzi">${entry.A || "Không có dữ liệu"}</div>
+                    <div class="pinyin">${entry.B || "Không có dữ liệu"}</div>
+                `;
+                
+                const vietnameseGroup = document.createElement('div');
+                vietnameseGroup.className = 'groupbox';
+                vietnameseGroup.innerHTML = `
+                    <div class="groupbox-title">Tiếng Việt</div>
+                    <div class="vietnamese">${entry.C || "Không có dữ liệu"}</div>
+                `;
+                
+                const imageGroup = document.createElement('div');
+                imageGroup.className = 'groupbox';
+                imageGroup.innerHTML = `
+                    <div class="groupbox-title">Hình ảnh trang phục</div>
+                    <div class="image-container">
+                        <img src="${entry.D || ''}" alt="${entry.A || 'Image'}" 
+                             onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden')">
+                        <div class="image-loading ${entry.D ? 'hidden' : ''}">Đang tìm kiếm hình ảnh...</div>
+                    </div>
+                `;
+                
+                // Only add image group if there's an image URL
+                resultItem.appendChild(hanziPinyinGroup);
+                resultItem.appendChild(vietnameseGroup);
+                if (entry.D) {
+                    resultItem.appendChild(imageGroup);
+                }
+                
+                resultContainer.appendChild(resultItem);
+            });
+        }
+
+        // Search function - finds all entries that contain the search term in any field
+        function performSearch() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            
+            if (searchTerm === '') {
+                resultContainer.innerHTML = '';
+                return;
+            }
+            
+            // Find all matching entries (search in Hanzi, Pinyin, and Vietnamese)
+            const foundEntries = dictionary.filter(entry => 
+                (entry.A && entry.A.toLowerCase().includes(searchTerm)) || 
+                (entry.B && entry.B.toLowerCase().includes(searchTerm)) ||
+                (entry.C && entry.C.toLowerCase().includes(searchTerm))
+            );
+            
+            displayResults(foundEntries);
+        }
+
+        // Initialize
+        searchInput.addEventListener('input', performSearch);
+        loadDictionary();
+		
+		
+		
+		// Thêm vào cuối file script
+		function adjustImageOrientation() {
+			document.querySelectorAll('.image-container').forEach(container => {
+				const img = container.querySelector('img');
+				if (img.complete) {
+					checkOrientation(img, container);
+				} else {
+					img.onload = () => checkOrientation(img, container);
+				}
+			});
+		}
+
+		function checkOrientation(img, container) {
+			container.classList.remove('landscape', 'portrait');
+			if (img.naturalWidth > img.naturalHeight) {
+				container.classList.add('landscape');
+			} else {
+				container.classList.add('portrait');
+			}
+		}
+
+		// Gọi hàm này sau khi load ảnh
+		window.addEventListener('load', adjustImageOrientation);
+		
+		
+    </script>	
+</body>
+</html>
