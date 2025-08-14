@@ -189,7 +189,7 @@
    "A": "佬族",
    "B": "lǎo zú",
    "C": "Lào",
-   "D": "https://cdn.nhandan.vn/images/1ea1ae7a315d88fc6fbf43696082611593d4091ddd874bc6072c0621b9c3c8a2b70e0a824f2aa261e192d93ca3248de91d65ff2098f756bf37f44415ba33c6ed/dtlao-nu-6140.jpg"
+   "D": "https://cdn.nhandan.vn/images/a2fb952abd4504389bfea2e4f7b4acc2f4a1f57e848fcfdca6d8d83162f9dc90640a7005aae247a011eb4fc0abccf724b7ae13cda333b1a658a4aa09dbd85477/laodat2.jpg"
  },
  {
    "A": "卢族(傣仂)",
@@ -224,7 +224,7 @@
  {
    "A": "墨侬族",
    "B": "mò nóng zú",
-   "C": "M’Nông",
+   "C": "MNông",
    "D": "https://cdn.nhandan.vn/images/1ea1ae7a315d88fc6fbf4369608261153db45666ade1b00696e46e3ebcd8fe94c95faca23d5f49dcd8dd4c25414dd3b163a899dc0d598a8828a44264337440e8/mnong-8759.jpg"
  },
  {
@@ -242,13 +242,13 @@
  {
    "A": "山由族",
    "B": "shān yóu zú",
-   "C": "Sándìu",
+   "C": "Sán Dìu",
    "D": "https://cdn.nhandan.vn/images/1ea1ae7a315d88fc6fbf436960826115bb4be614861eca710cf0d58f456957653b2c37b3be9620d8c838c5edcc264a385f87059df069f45e3a32749f3a2d00d2/dat-1188-9164.jpg"
  },
  {
    "A": "山泽族",
    "B": "shān zé zú",
-   "C": "SánChay",
+   "C": "Sán Chay",
    "D": "https://cdn.nhandan.vn/images/1ea1ae7a315d88fc6fbf4369608261158f58dcfed78b36f75768c51c0d3d7c32f25b1e255c6b2bec092750c188a6ee4f/h3_14.jpeg"
  },
  {
@@ -296,7 +296,7 @@
  {
    "A": "叶坚族",
    "B": "yè jiān zú",
-   "C": "Giẻ Triêng",
+   "C": "Gié Triêng",
    "D": "https://cdn.nhandan.vn/images/1ea1ae7a315d88fc6fbf4369608261153db45666ade1b00696e46e3ebcd8fe943abf99f060c9c2c60f55daf6b24e9eff16e5c8ada5c99a3a1e97cc82e8af1fe3/gietrieng5-6832.jpg"
  },
  {
@@ -331,4 +331,5 @@
  }
 
 ]
+
 
